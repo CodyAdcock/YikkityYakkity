@@ -26,8 +26,10 @@ class PostController{
     func createPost(text: String, author: String, completion: @escaping (Post?) -> Void) {
         // Create a new Post
         let newPost = Post(text: text, author: author)
+        
        // Create a CKRecord from our new post
         let newRecord = CKRecord(post: newPost)
+        
         // saving our CKRecord to our public database
         publicDB.save(newRecord) { (record, error) in
            // handling our error
@@ -38,10 +40,15 @@ class PostController{
             }
             // Unwrapping the successfully saved record
             guard let record = record else { completion(nil) ; return }
+            
             // Recreate post that was successfully saved
             guard let post = Post(ckRecord: record) else { completion(nil); return }
+            
             //append our successfully saved post to source of truth
             self.posts.append(post)
+            
+            // finish function, completion 
+            completion(post)
         }
     }
     // Read
@@ -49,7 +56,8 @@ class PostController{
        
         // query needs a predicate
         let predicate = NSPredicate(value: true)
-        // create a query
+        
+        // create a query to fetch records
         let query = CKQuery(recordType: PostConstants.typeKey, predicate: predicate)
         
         // return with records -OR- and error
@@ -59,6 +67,7 @@ class PostController{
                 completion(nil)
                 return
             }
+            
             guard let records = records else { completion(nil); return }
             
             // Turn records into posts
@@ -72,7 +81,7 @@ class PostController{
             
             // Or Same as Above
             // Iterating through an array Records and initialzing Posts from the non-Nil values
-            let posts: [Post] = records.compactMap({Post(ckRecord: $0)})
+            let posts: [Post] = records.compactMap( {Post(ckRecord: $0) } )
             // set source of truth for the posts we found, override what is already in [Post]
             self.posts = posts
             //complete with posts

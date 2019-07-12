@@ -22,6 +22,7 @@ class PostTableViewCell: UITableViewCell {
     
     
     @IBAction func upvoteButtonTapped(_ sender: Any) {
+        //unwrap post, verify there is a post 
         guard let post = post else { return }
         post.score += 1
         pointTotalLabel.text = "\(post.score)"
@@ -39,3 +40,4 @@ class PostTableViewCell: UITableViewCell {
         pointTotalLabel.text = "\(post.score)"
     }
 
+}

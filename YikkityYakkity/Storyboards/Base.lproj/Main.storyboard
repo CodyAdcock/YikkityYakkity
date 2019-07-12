@@ -21,14 +21,14 @@
                         <color key="separatorColor" red="0.20595327019691467" green="0.64870214462280273" blue="0.61752068996429443" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="sectionIndexBackgroundColor" red="0.7831459641456604" green="0.83284550905227661" blue="0.75820225477218628" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="208" id="I6k-ML-hzg" customClass="PostTableViewCell" customModule="YikkityYakkity" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="postCell" rowHeight="208" id="I6k-ML-hzg" customClass="PostTableViewCell" customModule="YikkityYakkity" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="414" height="208"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="I6k-ML-hzg" id="pn4-Oz-Jrw">
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="207.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="meV-LR-nYf">
+                                        <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="meV-LR-nYf">
                                             <rect key="frame" x="356" y="37" width="46" height="134"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zvq-zr-gNl">
@@ -67,6 +67,9 @@
                                         </stackView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="I'd like to apologize to my roomates for actually yelling &quot;Noooooooo......&quot; at my alarm clock the past couple of days." lineBreakMode="tailTruncation" numberOfLines="6" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pxm-ku-DPC">
                                             <rect key="frame" x="28" y="19" width="320" height="170"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="320" id="mfr-qx-7Mk"/>
+                                            </constraints>
                                             <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -84,7 +87,7 @@
                                 <connections>
                                     <outlet property="pointTotalLabel" destination="6Jh-zs-lIv" id="8sN-q8-jkr"/>
                                     <outlet property="postTextLabel" destination="pxm-ku-DPC" id="ZA8-5K-kUy"/>
-                                    <segue destination="BYZ-38-t0r" kind="show" id="KBp-ZR-Y9Z"/>
+                                    <segue destination="BYZ-38-t0r" kind="show" identifier="toPostDetailVC" id="KBp-ZR-Y9Z"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>

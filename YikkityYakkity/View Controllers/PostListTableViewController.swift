@@ -13,41 +13,66 @@ class PostListTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         fetchPost()
+        loadViewIfNeeded()
     }
 
     // MARK: - Table view data source
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
+        
+        return PostController.shared.posts.count
     }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath) as? PostTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "postCell", for: indexPath) as? PostTableViewCell
 
+        // grab a post from the singleton
         let post = PostController.shared.posts[indexPath.row]
+        
+        // cell from PostTableViewCell, landing pad variable. landing pad = post we assigned
+        // cell: PostTableViewCell, because we type casted it
         cell?.post = post
         
-        // nil coalesce a uitableview cell
+        // nil coalesce a uitableview cell, return cell else UItableviewcell
         return cell ?? UITableViewCell()
+        
     }
-
-
+    
     //MARK: = Bar Button Items
     @IBAction func createNewPostButtonTapped(_ sender: Any) {
-        presentSimpleAlert(title: "Add a new Post!", message: "")
+        presentSimpleAlert(title: "Add a new Post!", message: "Start typing!")
     }
     
     @IBAction func refreshButtonTapped(_ sender: Any) {
-        
+        fetchPost()
     }
     
+    func fetchPost() {
+        PostController.shared.fetchAllPosts { (_) in
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "toPostDetailVC" {
+            let destinationVC = segue.destination as? DetailViewController
+            guard let indexPath = tableView.indexPathForSelectedRow else { return }
+            let post = PostController.shared.posts[indexPath.row]
+            
+            destinationVC?.post = post 
+            
+        }
+    }
+
     func presentSimpleAlert(title: String, message: String) {
+        
         // Instatiating our Alert Controller, passing in our parameters for title and message
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         
-        // add textfields -OR- define with a name var messageTextField 
+        // add textfields -OR- define with a name var messageTextField
         alertController.addTextField { (textfield) in
             textfield.placeholder = "Add Message here..."
             
@@ -74,32 +99,17 @@ class PostListTableViewController: UITableViewController {
         
         // Add our cancel action
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        // Add the action to our alertController
+        
+        // Add ALL the actions to our alertController
         alertController.addAction(postAction)
         alertController.addAction(cancelAction)
+        
         // Present the alertController View
         self.present(alertController, animated: true )
         
         }
         
     }
-    
-    
-    func fetchPost() {
-    PostController.shared.fetchAllPosts { (_) in
-    DispatchQueue.main.async {
-    self.tableView.reloadData()
-            }
-        }
-    }
 
-    /*
-    // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
